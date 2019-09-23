@@ -2,6 +2,17 @@
 
 ## Setup Notes
 
+### Foreign Database
+The foreign database is: `db.live.mapc.org`
+Before running `bin/setup` you need to set two environment variables: `FOREIGN_DATABASE_USERNAME` and `FOREIGN_DATABASE_PASSWORD` to comport with the username and password of your postgres foreign database.
+These credentials must be created on db.live.mapc.org first.
+These credentials must then be placed in your local `.env` file.
+Example .env file (created locally at: `/rails/.env`) it will not be checked into git:
+```
+FOREIGN_DATABASE_USERNAME=xxxxxxxx
+FOREIGN_DATABASE_PASSWORD=xxxxxxxx
+```
+
 Before running `bin/setup` you need to set two environment variables: `FOREIGN_DATABASE_USERNAME` and `FOREIGN_DATABASE_PASSWORD` to comport with the username and password of your postgres foreign database.
 
 You will need a mapquest api key set `MAPQUEST_API_KEY` in your .env for the geocoder to work.
@@ -9,9 +20,30 @@ You will need a mapquest api key set `MAPQUEST_API_KEY` in your .env for the geo
 Before running the test suite you need to enable the foreign data wrapper in the test database:
 
   RAILS_ENV=test rake db:add_foreign_data_wrapper_interface
+
   RAILS_ENV=test rake db:add_rpa_fdw
+
   RAILS_ENV=test rake db:add_counties_fdw
+
   RAILS_ENV=test rake db:add_municipalities_fdw
+
+### If there are 0 Developements in the database, you will get an error.
+Use Rails console to create an initial instance of Development.
+
+run `$ bundle exec rails c`
+and create a Development:
+```
+Development.create(
+  name: "asdf",
+  status: "completed",
+  descr: "This is a test description.",
+  address: "Milebrook Road",
+  state: "MA",
+  year_compl: 2019,
+  hu: 0,
+  commsf: 154,
+  latitude: 42,
+  longitude: -71)
 
 ### Postgres Security Challenges
 
